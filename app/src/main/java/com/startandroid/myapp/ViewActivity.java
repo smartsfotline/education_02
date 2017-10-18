@@ -1,98 +1,70 @@
 package com.startandroid.myapp;
 
+
+import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
-import org.w3c.dom.Text;
+import java.util.ArrayList;
 
-public class ViewActivity extends AppCompatActivity implements OnClickListener{
-    EditText editID;
-    Button ShowInf;
-    TextView fieldDB, textView3, textView4;
-    SQLiteDatabase db;
+
+
+public class ViewActivity extends AppCompatActivity {
+   private ListView listView;
+    SimpleCursorAdapter dataAdapter;
+    DBHelper db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
-        LayoutElements();
-        DBConnection();
-        ShowInf.setOnClickListener(this);
-    }
-
-    private void LayoutElements(){
-        editID = (EditText) findViewById(R.id.editID);
-        ShowInf = (Button) findViewById(R.id.ShowInf);
-        fieldDB = (TextView) findViewById(R.id.fieldDB);
-        textView3 = (TextView) findViewById(R.id.textView3);
-        textView4 = (TextView) findViewById(R.id.textView4);
+        listView = (ListView) findViewById(R.id.listView);
+        db = new DBHelper(this);
+        populateListView();
 
     }
 
-    public void onClick(View v) {
-        switch(v.getId()){
-            case R.id.ShowInf:
-                selectById(ShowInf);
+    private void populateListView(){
+        Cursor data = db.getData();
+        ArrayList<String> listData = new ArrayList<>();
+            while(data.moveToNext()){
+                listData.add(data.getString(0));
         }
-    }
 
-    private void DBConnection(){
-        try{
-            db = openOrCreateDatabase("TestDB", MODE_PRIVATE, null);
-            String CreateTableQuery = "CREATE TABLE IF NOT EXISTS FirstTable("+"id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+"name TEXT,"+"age TEXT,"+"lastname TEXT"+");";
-            db.execSQL(CreateTableQuery);
-        }
-        catch (Exception e){
-            Toast.makeText(getBaseContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
+        ArrayList<String> secondArrayList = new ArrayList<>();
+        secondArrayList.addAll(listData);
+        ListAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, secondArrayList);
+        listView.setAdapter(adapter);
 
-    public void setFields(int id, String name,  String age, String lastname) {
-        if (id != 0)
-            editID.setText(String.valueOf(id));
-        if (name != null)
-            fieldDB.setText(name);
-        if (age != null)
-            textView3.setText(age);
-        if (lastname != null)
-            textView4.setText(lastname);
-    }
-
-    public void selectById(View v){
-        String selectQuery = "SELECT * FROM FirstTable WHERE id = ?";
-        int id = 0;
-        String name, age, lastname;
-        try{
-            if(editID.getText().toString().length()>0)
-                id = Integer.parseInt(editID.getText().toString());
-            if(id<0){
-                Toast.makeText(getBaseContext(), "Incorrect value in ID field", Toast.LENGTH_SHORT).show();
-            }else{
-                Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(id)});
-                if(cursor.moveToFirst()){
-                    id = cursor.getInt(0);
-                    name =cursor.getString(1);
-                    age = cursor.getString(2);
-                    lastname = cursor.getString(3);
-                    setFields(id, name, age, lastname);
-                }else{
-                    Toast.makeText(getBaseContext(), "Smth went wrong", Toast.LENGTH_SHORT).show();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String id = adapterView.getItemAtPosition(i).toString();
+                Cursor data = db.getItemID(id);
+                int itemID = -1;
+                while(data.moveToNext()){
+                    itemID = data.getInt(0);
+                }
+                if(itemID > -1){
+                    Intent editScreenIntent = new Intent(ViewActivity.this, ActivityFill.class);
+                    editScreenIntent.putExtra("id",itemID);
+                    startActivity(editScreenIntent);
                 }
             }
-        }catch (Exception e){
-            Toast.makeText(getBaseContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
-        }
+        });
     }
-
-
-
 }
+
+
+
+
+
 

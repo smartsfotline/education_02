@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MyApp</string>
+    <!--<string name="dialog">Sure you want to delete the item?</string>-->
+    <!--<string name="yes">Yes</string>-->
+    <string name="update_record">Обновить</string>
+    <!--<string name="no">No</string>-->
+
 </resources>
