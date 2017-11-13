@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:context="com.startandroid.myapp.ViewActivity"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.startandroid.myapp.ViewActivity">
+    android:layout_height="match_parent">
 
 
-    <ListView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:id = "@+id/listView"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="8dp"
-        android:dividerHeight="4dp"
-  >
+    <android.support.v7.widget.RecyclerView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/rv"/>
+      
 
-    </ListView>
+    <!--<ListView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:id = "@+id/listView"-->
+        <!--tools:layout_editor_absoluteY="0dp"-->
+        <!--tools:layout_editor_absoluteX="8dp"-->
+        <!--android:dividerHeight="4dp"-->
+  <!--&gt;-->
+
+    <!--</ListView>-->
 
     <!--<Button-->
         <!--android:layout_width="wrap_content"-->
@@ -26,4 +31,4 @@
         <!--tools:layout_editor_absoluteY="0dp"-->
         <!--tools:layout_editor_absoluteX="0dp">-->
     <!--</Button>-->
-</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

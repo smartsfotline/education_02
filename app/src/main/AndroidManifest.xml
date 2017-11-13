@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.startandroid.myapp">
-
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-sdk tools:overrideLibrary="android.support.v17.leanback"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,9 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ActivityView" />
-        <activity android:name=".ActivityFill" />
-        <activity android:name=".ViewActivity"></activity>
+              <activity android:name=".ActivityFill" />
+        <activity android:name=".ViewActivity"/>
+
     </application>
 
 </manifest>
